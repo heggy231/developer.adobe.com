@@ -32,32 +32,32 @@ definitions:
 strains:
   default:
     <<: *basestrain
-    package: developer-adobe-com/1e21313f7542fd3e00ff0b4601f566375b813bcc
+    package: developer-adobe-com/f96c79b0a9588f7af00cc1617ea79a56bf56bec3
 
   launch-docs-helixdemo:
     <<: *basestrain
     url: https://adobedevsite.helix-demo.xyz/launch/docs
     content: https://github.com/Adobe-Marketing-Cloud/reactor-user-docs.git#master
     directoryIndex: README.html
-    package: developer-adobe-com/1e21313f7542fd3e00ff0b4601f566375b813bcc
+    package: developer-adobe-com/f96c79b0a9588f7af00cc1617ea79a56bf56bec3
 
   xd-docs-helixdemo:
     <<: *basestrain
     url: https://adobedevsite.helix-demo.xyz/xd/docs
     content: https://github.com/AdobeXD/plugin-docs.git#master
     directoryIndex: README.html
-    package: developer-adobe-com/1e21313f7542fd3e00ff0b4601f566375b813bcc
+    package: developer-adobe-com/f96c79b0a9588f7af00cc1617ea79a56bf56bec3
 
   starter-docs-helixdemo:
     <<: *basestrain
     url: https://adobedevsite.helix-demo.xyz/starter/docs
     content: https://github.com/AdobeDocs/starter-docs.git#master
     directoryIndex: Overview.html
-    package: developer-adobe-com/1e21313f7542fd3e00ff0b4601f566375b813bcc
+    package: developer-adobe-com/f96c79b0a9588f7af00cc1617ea79a56bf56bec3
 
   helix-demo:
-    url: https://adobedevsite.helix-demo.xyz
+    url: https://adobedevsite.helix-demo.xyz/
     code: ssh://git@github.com/adobe/developer.adobe.com.git#master
     content: ssh://git@github.com/adobe/developer.adobe.com.git#master
     static: https://github.com/adobe/developer.adobe.com.git/htdocs#master
-    package: developer-adobe-com/1e21313f7542fd3e00ff0b4601f566375b813bcc
+    package: developer-adobe-com/f96c79b0a9588f7af00cc1617ea79a56bf56bec3
