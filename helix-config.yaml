@@ -50,6 +50,12 @@ strains:
     content: https://github.com/AdobeDocs/starter-docs.git#master
     directoryIndex: Overview.html
     package: developer-adobe-com/4b2723dcbae41ab827aa30d351b45404616b9ffe
+  - name: contributor-docs-helixdemo
+    <<: *basestrain
+    url: https://adobedevsite.helix-demo.xyz/contributor/docs
+    content: https://github.com/abhishekchandran/contributor.en.git#helix
+    directoryIndex: Overview.html
+    package: developer-adobe-com/4b2723dcbae41ab827aa30d351b45404616b9ffe
   - name: helix-demo
     <<: *basestrain
     url: https://adobedevsite.helix-demo.xyz/

@@ -119,10 +119,9 @@ function assembleEditUrl(owner, repo, ref, path, logger) {
  * @param String ref Ref
  * @param {Object} logger Logger
  */
-function computeNavPath(isDev, logger, mountPoint) {
+async function computeNavPath(apiRoot, owner, repo, ref, isDev, logger, mountPoint) {
   logger.debug('docs_html.pre.js - Fetching the nav');
 
-  /*
   // fetch the whole tree...
   const options = {
     uri: `${apiRoot}` +
@@ -139,6 +138,7 @@ function computeNavPath(isDev, logger, mountPoint) {
     json: true,
   };
 
+  /*
   logger.debug(`docs_html.pre.js - Fetching... ${options.uri}`);
   const json = await request(options);
 
@@ -163,12 +163,35 @@ function computeNavPath(isDev, logger, mountPoint) {
     const summaryPath = 'https://www.project-helix.io/SUMMARY';
     return summaryPath;
   } */
+
+  //  works with only SUMMARY.md
+  /*
   const summaryPath = `${mountPoint}/SUMMARY`;
   // TODO: add mount point to the summary
   // const summaryPath = '/starter/docs/SUMMARY';
   logger.debug(`docs_html.pre.js - Development path to SUMMARY.md to generate nav: ${summaryPath}`);
   return summaryPath;
+  */
+
+  logger.debug(`docs_html.pre.js - Fetching... ${options.uri}`);
+  const json = await request(options);
+  
+  let summaryPath;
+  const validMd = ['SUMMARY.md', 'TOC.md'];
+
+  for (let item of json.tree) {
+    if (!summaryPath) {
+      if (validMd.includes(item.path)) {
+        summaryPath = `${mountPoint}/${item.path.substring(0, item.path.indexOf('.'))}`;
+        break;
+      }
+    }
+  }
+
+  logger.debug(`docs_html.pre.js - Development path to valid md files to generate nav: ${summaryPath}`);
+  return summaryPath;
 }
+
 
 /**
  * Creates the TOC (table of contents) from the children
@@ -252,7 +275,11 @@ async function pre(payload, action) {
       // TODO find a better way or implement one
       const isDev = action.request.headers.host ? action.request.headers.host.indexOf('localhost') !== -1 : false;
 
-      p.content.nav = computeNavPath(
+      p.content.nav = await computeNavPath(
+        secrets.REPO_API_ROOT,
+        actionReq.params.owner,
+        actionReq.params.repo,
+        actionReq.params.ref,
         isDev,
         logger,
         action.request.params.rootPath,
