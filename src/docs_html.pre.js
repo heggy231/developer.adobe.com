@@ -124,14 +124,14 @@ async function computeNavPath(apiRoot, owner, repo, ref, isDev, logger, mountPoi
 
   // fetch the whole tree...
   const options = {
-    uri: `${apiRoot}` +
-      'repos/' +
-      `${owner}` +
-      '/' +
-      `${repo}` +
-      '/git/trees/' +
-      `${ref}` +
-      '?recursive=1',
+    uri: `${apiRoot}`
+      + 'repos/'
+      + `${owner}`
+      + '/'
+      + `${repo}`
+      + '/git/trees/'
+      + `${ref}`
+      + '?recursive=1',
     headers: {
       'User-Agent': 'Request-Promise',
     },
@@ -175,17 +175,23 @@ async function computeNavPath(apiRoot, owner, repo, ref, isDev, logger, mountPoi
 
   logger.debug(`docs_html.pre.js - Fetching... ${options.uri}`);
   const json = await request(options);
-  
+
   let summaryPath;
+  const BreakException = {};
   const validMd = ['SUMMARY.md', 'TOC.md'];
 
-  for (let item of json.tree) {
-    if (!summaryPath) {
-      if (validMd.includes(item.path)) {
-        summaryPath = `${mountPoint}/${item.path.substring(0, item.path.indexOf('.'))}`;
-        break;
+  // iterate over each file and search for SUMMARY.md or TOC.md
+  try {
+    json.tree.forEach((item) => {
+      if (!summaryPath) {
+        if (validMd.includes(item.path)) {
+          summaryPath = `${mountPoint}/${item.path.substring(0, item.path.indexOf('.'))}`;
+          throw BreakException;
+        }
       }
-    }
+    });
+  } catch (e) {
+    if (e !== BreakException) throw e;
   }
 
   logger.debug(`docs_html.pre.js - Development path to valid md files to generate nav: ${summaryPath}`);
